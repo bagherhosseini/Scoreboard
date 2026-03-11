@@ -22,6 +22,21 @@ export class Scoreboard {
     this.matches.splice(index, 1);
   }
 
+  updateScore(
+    homeTeam: string,
+    awayTeam: string,
+    homeScore: number,
+    awayScore: number
+  ): void {
+    const match = this.findMatch(homeTeam, awayTeam);
+
+    if (!match) {
+      throw new Error("Match not found");
+    }
+
+    match.updateScore(homeScore, awayScore);
+  }
+
   getSummary(): Match[] {
     return [...this.matches];
   }

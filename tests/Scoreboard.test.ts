@@ -49,4 +49,22 @@ describe("Scoreboard", () => {
       );
     });
   });
+
+  describe("updateScore", () => {
+    it("should update the score of a match", () => {
+      scoreboard.startMatch("Mexico", "Canada");
+
+      scoreboard.updateScore("Mexico", "Canada", 0, 5);
+
+      const summary = scoreboard.getSummary();
+      expect(summary[0]!.homeScore).toBe(0);
+      expect(summary[0]!.awayScore).toBe(5);
+    });
+
+    it("should throw if match is not found", () => {
+      expect(() => scoreboard.updateScore("Mexico", "Canada", 1, 0)).toThrow(
+        "Match not found"
+      );
+    });
+  });
 });
