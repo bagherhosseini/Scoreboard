@@ -67,4 +67,57 @@ describe("Scoreboard", () => {
       );
     });
   });
+
+  describe("getSummary", () => {
+    it("should return matches ordered by total score descending", () => {
+      scoreboard.startMatch("Mexico", "Canada");
+      scoreboard.startMatch("Spain", "Brazil");
+
+      scoreboard.updateScore("Mexico", "Canada", 0, 5);
+      scoreboard.updateScore("Spain", "Brazil", 10, 2);
+
+      const summary = scoreboard.getSummary();
+      expect(summary[0]!.homeTeam).toBe("Spain");
+      expect(summary[1]!.homeTeam).toBe("Mexico");
+    });
+
+    it("should return most recently started match first when total scores are equal", () => {
+      scoreboard.startMatch("Mexico", "Canada");
+      scoreboard.startMatch("Spain", "Brazil");
+
+      scoreboard.updateScore("Mexico", "Canada", 3, 2);
+      scoreboard.updateScore("Spain", "Brazil", 2, 3);
+
+      const summary = scoreboard.getSummary();
+      expect(summary[0]!.homeTeam).toBe("Spain");
+      expect(summary[1]!.homeTeam).toBe("Mexico");
+    });
+
+    it("should return the correct order for the requirements example", () => {
+      scoreboard.startMatch("Mexico", "Canada");
+      scoreboard.startMatch("Spain", "Brazil");
+      scoreboard.startMatch("Germany", "France");
+      scoreboard.startMatch("Uruguay", "Italy");
+      scoreboard.startMatch("Argentina", "Australia");
+
+      scoreboard.updateScore("Mexico", "Canada", 0, 5);
+      scoreboard.updateScore("Spain", "Brazil", 10, 2);
+      scoreboard.updateScore("Germany", "France", 2, 2);
+      scoreboard.updateScore("Uruguay", "Italy", 6, 6);
+      scoreboard.updateScore("Argentina", "Australia", 3, 1);
+
+      const summary = scoreboard.getSummary();
+
+      expect(summary).toHaveLength(5);
+      expect(summary[0]!.homeTeam).toBe("Uruguay");
+      expect(summary[1]!.homeTeam).toBe("Spain");
+      expect(summary[2]!.homeTeam).toBe("Mexico");
+      expect(summary[3]!.homeTeam).toBe("Argentina");
+      expect(summary[4]!.homeTeam).toBe("Germany");
+    });
+
+    it("should return an empty array when no matches are in progress", () => {
+      expect(scoreboard.getSummary()).toEqual([]);
+    });
+  });
 });

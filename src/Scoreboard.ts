@@ -38,7 +38,15 @@ export class Scoreboard {
   }
 
   getSummary(): Match[] {
-    return [...this.matches];
+    return [...this.matches].sort((a, b) => {
+      const scoreDiff = b.totalScore - a.totalScore;
+
+      if (scoreDiff !== 0) {
+        return scoreDiff;
+      }
+
+      return b.createdOrder - a.createdOrder;
+    });
   }
 
   private findMatch(homeTeam: string, awayTeam: string): Match | undefined {

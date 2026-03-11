@@ -1,6 +1,9 @@
 export class Match {
+  private static orderCounter: number = 0;
+
   public readonly homeTeam: string;
   public readonly awayTeam: string;
+  public readonly createdOrder: number;
   private _homeScore: number = 0;
   private _awayScore: number = 0;
 
@@ -14,6 +17,7 @@ export class Match {
 
     this.homeTeam = homeTeam;
     this.awayTeam = awayTeam;
+    this.createdOrder = Match.orderCounter++;
   }
 
   get homeScore(): number {
