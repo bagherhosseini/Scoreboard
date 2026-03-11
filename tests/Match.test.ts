@@ -34,4 +34,39 @@ describe("Match", () => {
       "Home and away teams must be different"
     );
   });
+
+  describe("updateScore", () => {
+    it("should update the score", () => {
+      const match = new Match("Mexico", "Canada");
+
+      match.updateScore(2, 3);
+
+      expect(match.homeScore).toBe(2);
+      expect(match.awayScore).toBe(3);
+    });
+
+    it("should calculate total score after update", () => {
+      const match = new Match("Mexico", "Canada");
+
+      match.updateScore(2, 3);
+
+      expect(match.totalScore).toBe(5);
+    });
+
+    it("should throw if home score is negative", () => {
+      const match = new Match("Mexico", "Canada");
+
+      expect(() => match.updateScore(-1, 0)).toThrow(
+        "Scores cannot be negative"
+      );
+    });
+
+    it("should throw if away score is negative", () => {
+      const match = new Match("Mexico", "Canada");
+
+      expect(() => match.updateScore(0, -1)).toThrow(
+        "Scores cannot be negative"
+      );
+    });
+  });
 });
